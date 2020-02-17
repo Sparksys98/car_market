@@ -1,20 +1,21 @@
 from django.shortcuts import render, redirect
 from .models import Car
 from .forms import CarForm
+from django.contrib import messages
 def car_list(request):
-	cars = Car.objects.all()
-	context = {
-		"cars": cars,
-	}
-	return render(request, 'car_list.html', context)
+    cars = Car.objects.all()
+    context = {
+        "cars": cars,
+    }
+    return render(request, 'car_list.html', context)
 
 
 def car_detail(request, car_id):
-	car = Car.objects.get(id=car_id)
-	context = {
-		"car": car,
-	}
-	return render(request, 'car_detail.html', context)
+    car = Car.objects.get(id=car_id)
+    context = {
+        "car": car,
+    }
+    return render(request, 'car_detail.html', context)
 
 
 def car_create(request):
@@ -23,6 +24,7 @@ def car_create(request):
         form = CarForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'car details added.')
             return redirect('car-list')
     context = {
         "form":form,
@@ -37,6 +39,7 @@ def car_update(request, car_id):
         form = CarForm(request.POST,request.FILES, instance=car_obj)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Profile details updated.')
             return redirect('car-list')
     context = {
         "car_obj": car_obj,
@@ -46,6 +49,7 @@ def car_update(request, car_id):
 
 
 def car_delete(request, car_id):
-	car_obj = Car.objects.get(id=car_id)
-	car_obj.delete()
-	return redirect('car-list')
+    car_obj = Car.objects.get(id=car_id)
+    car_obj.delete()
+    messages.success(request, 'car details deleted.')
+    return redirect('car-list')
