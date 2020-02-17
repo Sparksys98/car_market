@@ -1,15 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Car Detail</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Car Details
+{% endblock %}
+	{% block code %}
 		<h1>
 			{{car.make}} - {{car.model}}
 			<small>
 				{{car.year}}
 			</small>
+			{% if car.img %}
+			<img class="card-img-top" src="{{car.img.url}}" alt="" enctype="multipart/form-data">
+			{% endif %}
 		</h1>
+		<div class="col-md-6">
+				<a href="{% url 'car-update' car.id %}" class="btn btn-outline-primary btn-block">Update</a>
+		</div>
+		<div class="col-md-6">
+				<a href="{% url 'car-delete' car.id %}" class="btn btn-outline-danger btn-block">Delete</a>
+		</div>
 		<hr>
-</body>
-</html>
+		{% endblock code %}
